@@ -1,2 +1,2 @@
-CONNECTION_STRING =  'mongodb+srv://belousyevgen:<password>@cluster0.va2gd0n.mongodb.net/contacts'
+CONNECTION_STRING =  ''
 SECRET_KEY=
