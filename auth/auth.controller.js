@@ -1,8 +1,8 @@
 import queryString from 'query-string';
 import axios from 'axios';
-import URL, { URLParams } from 'url';
+import URL from 'url';
 
-async function googleAuth(req, res) {
+export async function googleAuth(req, res) {
   const stringifiedParams = queryString.stringify({
     client_id: process.env.GOOGLE_CLIENT_ID,
     redirect_uri: `${process.env.BASE_URL}/auth/google-redirect`,
@@ -19,7 +19,7 @@ async function googleAuth(req, res) {
   );
 }
 
-async function googleRedirect(req, res) {
+export async function googleRedirect(req, res) {
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
   const urlObj = new URL(fullUrl);
   const urlParams = queryString.parse(urlObj.search);
@@ -50,4 +50,3 @@ async function googleRedirect(req, res) {
     `${process.env.FRONTEND_URL}?email=${userData.data.email}`
   );
 }
-export default authController;

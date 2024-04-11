@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { googleAuth, googleRedirect } from '../auth.controller/auth.controller';
-import { catchAsync } from '../helpers/catchAsync';
+import { googleAuth, googleRedirect } from '../auth/auth.controller.js';
+import { catchAsync } from '../helpers/catchAsync.js';
 
 const router = Router();
 
