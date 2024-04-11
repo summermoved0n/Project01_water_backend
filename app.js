@@ -8,6 +8,8 @@ import userRouter from "./routes/auth.js";
 
 dotenv.config();
 
+const { DB_HOST, PORT } = process.env;
+
 const app = express();
 
 app.use(morgan("tiny"));
@@ -26,13 +28,10 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-const DB_HOST =
-  "mongodb+srv://GOIT_DataBase:UHKfPAMW647ppsrC@cluster0.vda3wk6.mongodb.net/my-users?retryWrites=true&w=majority";
-
 mongoose
   .connect(DB_HOST)
   .then(() => {
-    app.listen(3030, () => {
+    app.listen(PORT, () => {
       console.log("Database connection successful");
     });
   })
