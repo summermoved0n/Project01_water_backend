@@ -28,6 +28,14 @@ app.use('/link', (req, res) => {
   res.sendFile(path.join(__dirname, '../../public/link.html'));
 });
 
+/**
+ * TO DO: 
+ * 1. It is necessary to remove link.html once we have a frontend. 
+ * 2. To update links with real frontend link
+ * 3. Render
+    
+ */
+
 app.use('/api/contacts', contactsRouter);
 app.use('/api/users', userRouter);
 
