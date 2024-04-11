@@ -1,5 +1,5 @@
 {
-  "name": "goit-node-rest-api",
+  "name": "water-consumption-app",
   "type": "module",
   "scripts": {
     "start": "node ./app.js",
@@ -14,7 +14,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.1",
     "morgan": "^1.10.0",
-    "nanoid": "^5.0.4"
+    "nanoid": "^5.0.4",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

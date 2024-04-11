@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import contactsRouter from './routes/contactsRouter.js';
 import dotenv from 'dotenv';
 import userRouter from './routes/auth.js';
-
+import authRouter from './auth/auth.router.js';
 dotenv.config();
 const app = express();
 
@@ -23,6 +23,11 @@ app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
 
+app.use('/auth', authRouter);
+app.use('/link', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public/link.html'));
+});
+
 app.use('/api/contacts', contactsRouter);
 app.use('/api/users', userRouter);
 
@@ -35,6 +40,6 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-app.listen(3000, () => {
-  console.log('Server is running. Use our API on port: 3000');
+app.listen(3030, () => {
+  console.log('Server is running. Use our API on port: 3030');
 });
