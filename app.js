@@ -6,6 +6,7 @@ import contactsRouter from "./routes/contactsRouter.js";
 import dotenv from "dotenv";
 import userRouter from "./routes/auth.js";
 import authRouter from "./auth/auth.router.js";
+import usersRouter from "./routes/usersRouter.js";
 dotenv.config();
 
 const { DB_HOST, PORT } = process.env;
@@ -29,8 +30,9 @@ app.use("/link", (req, res) => {
     
  */
 
-app.use("/api/contacts", contactsRouter);
-app.use("/api/users", userRouter);
+app.use("/api/auth", userRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/water", contactsRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
