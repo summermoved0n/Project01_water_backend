@@ -1,16 +1,16 @@
-import jwt from 'jsonwebtoken';
-import { User } from '../models/userModels.js';
-import { HttpError } from '../helpers/HttpError.js';
-import dotenv from 'dotenv';
+import jwt from "jsonwebtoken";
+import User from "../models/usersModel.js";
+import { HttpError } from "../helpers/HttpError.js";
+import dotenv from "dotenv";
 dotenv.config();
 
 const { SECRET_KEY } = process.env;
 
 export const authenticate = async (req, res, next) => {
-  const { authorization = '' } = req.headers;
-  const [bearer, token] = authorization.split(' ');
+  const { authorization = "" } = req.headers;
+  const [bearer, token] = authorization.split(" ");
   try {
-    if (bearer !== 'Bearer') {
+    if (bearer !== "Bearer") {
       throw HttpError(401);
     }
 

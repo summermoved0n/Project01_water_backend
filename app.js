@@ -4,8 +4,8 @@ import cors from "cors";
 import mongoose from "mongoose";
 import contactsRouter from "./routes/contactsRouter.js";
 import dotenv from "dotenv";
-import userRouter from "./routes/auth.js";
-import authRouter from "./auth/auth.router.js";
+import authRouter from "./routes/authRouter.js";
+import googleRouter from "./auth/auth.router.js";
 import usersRouter from "./routes/usersRouter.js";
 
 dotenv.config();
@@ -18,7 +18,7 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
 
-app.use("/auth", authRouter);
+app.use("/auth", googleRouter);
 app.use("/link", (req, res) => {
   res.sendFile(path.join(__dirname, "../../public/link.html"));
 });
@@ -31,7 +31,7 @@ app.use("/link", (req, res) => {
     
  */
 
-app.use("/api/auth", userRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/water", contactsRouter);
 
