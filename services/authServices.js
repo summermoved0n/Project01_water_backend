@@ -22,7 +22,6 @@ export const createUser = async (userData) => {
   };
 
   const token = jwt.sign(payload, SECRET_KEY);
-  console.log(token);
   const newUser = await User.findByIdAndUpdate(
     user._id,
     { token },
