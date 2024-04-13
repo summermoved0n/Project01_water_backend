@@ -1,9 +1,10 @@
 import express from "express";
 
 import { authenticate } from "../middleware/authenticate.js";
-import {} from "../schemas/usersSchemas.js";
-import validateBody from "../helpers/validateBody.js";
+// import {} from "../schemas/usersSchemas.js";
+// import validateBody from "../helpers/validateBody.js";
 import usersController from "../controllers/usersController.js";
+import userRouter from "./auth.js";
 
 const usersRouter = express.Router();
 
@@ -11,8 +12,10 @@ usersRouter.use(authenticate);
 
 usersRouter.get("/current", usersController.currentUser);
 
-usersRouter.patch();
+usersRouter.patch("/avatar", usersController.updateAvatar);
 
-usersRouter.put();
+usersRouter.put("/", usersController.updateUser);
+
+userRouter.patch("/waterRate", usersController.updateWaterRate);
 
 export default usersRouter;

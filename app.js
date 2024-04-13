@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import userRouter from "./routes/auth.js";
 import authRouter from "./auth/auth.router.js";
 import usersRouter from "./routes/usersRouter.js";
+
 dotenv.config();
 
 const { DB_HOST, PORT } = process.env;
