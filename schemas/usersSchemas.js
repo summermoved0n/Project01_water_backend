@@ -5,7 +5,7 @@ export const userUpdateAvatar = Joi.object({
 });
 
 export const userUpadateWaterRate = Joi.object({
-  waterRate: Joi.string().min(1).max(15000).required(),
+  waterRate: Joi.number().min(1).max(15000).required(),
 });
 
 export const userUpdateInformation = Joi.object({

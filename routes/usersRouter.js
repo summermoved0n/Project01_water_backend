@@ -8,7 +8,7 @@ import {
 } from "../schemas/usersSchemas.js";
 import validateBody from "../helpers/validateBody.js";
 import usersController from "../controllers/usersController.js";
-import userRouter from "./authRouter.js";
+import upload from "../middleware/uploadAvatar.js";
 
 const usersRouter = express.Router();
 
@@ -19,6 +19,7 @@ usersRouter.get("/current", usersController.currentUser);
 usersRouter.patch(
   "/avatar",
   validateBody(userUpdateAvatar),
+  upload.single("avatarURL"),
   usersController.updateAvatar
 );
 
@@ -28,7 +29,7 @@ usersRouter.patch(
   usersController.updateUser
 );
 
-userRouter.patch(
+usersRouter.patch(
   "/waterrate",
   validateBody(userUpadateWaterRate),
   usersController.updateWaterRate
