@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
-import contactsRouter from "./routes/contactsRouter.js";
+import waterNotesRouter from "./routes/waterNotesRouter.js";
 import dotenv from "dotenv";
 import authRouter from "./routes/authRouter.js";
 import googleRouter from "./auth/auth.router.js";
@@ -34,7 +34,7 @@ app.use("/link", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
-app.use("/api/water", contactsRouter);
+app.use("/api/water-notes", waterNotesRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
