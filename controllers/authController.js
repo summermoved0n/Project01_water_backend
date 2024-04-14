@@ -1,6 +1,6 @@
 import { HttpError } from "../helpers/HttpError.js";
-import { User } from "../models/userModels.js";
-import { createUser, emailUnique } from "../services/userServices.js";
+import User from "../models/usersModel.js";
+import { createUser, emailUnique } from "../services/authServices.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
@@ -18,7 +18,6 @@ export const register = async (req, res, next) => {
     res.status(201).json({
       user: {
         email: newUser.email,
-        subscription: newUser.subscription,
       },
     });
   } catch (error) {
