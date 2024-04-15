@@ -11,11 +11,17 @@ export const emailUnique = async (email) => {
   return user;
 };
 
-export const createUser = async (userData) => {
+export const createUser = async (userData, avatar) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
 
-  const user = await User.create({ ...userData, password: hashedPassword });
+  console.log(avatar);
+
+  const user = await User.create({
+    ...userData,
+    avatarURL: avatar,
+    password: hashedPassword,
+  });
 
   const payload = {
     id: user._id,
