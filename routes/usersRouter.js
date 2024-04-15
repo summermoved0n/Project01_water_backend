@@ -8,7 +8,6 @@ import {
 } from "../schemas/usersSchemas.js";
 import validateBody from "../helpers/validateBody.js";
 import usersController from "../controllers/usersController.js";
-// import upload from "../middleware/uploadAvatar.js";
 import upload from "../middleware/uploadByCloudinary.js";
 
 const usersRouter = express.Router();
@@ -31,7 +30,7 @@ usersRouter.patch(
 );
 
 usersRouter.patch(
-  "/waterrate",
+  "/water-rate",
   validateBody(userUpadateWaterRate),
   usersController.updateWaterRate
 );

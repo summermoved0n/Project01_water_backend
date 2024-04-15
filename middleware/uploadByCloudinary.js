@@ -1,4 +1,4 @@
-import cloudinary from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
 
@@ -19,7 +19,7 @@ const storage = new CloudinaryStorage({
     return {
       folder: "avatars",
       allowed_formats: ["jpg", "png"], // Adjust the allowed formats as needed
-      public_id: file.originalname, // Use original filename as the public ID
+      public_id: _id, // Use original filename as the public ID
       transformation: { width: 28, height: 28 },
     };
   },

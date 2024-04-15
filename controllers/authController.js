@@ -3,6 +3,7 @@ import User from "../models/usersModel.js";
 import { createUser, emailUnique } from "../services/authServices.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import gravatar from "gravatar";
 
 const { SECRET_KEY } = process.env;
 
@@ -14,10 +15,20 @@ export const register = async (req, res, next) => {
       throw HttpError(409, "Email in use");
     }
 
-    const newUser = await createUser({ ...req.body });
+    const avatar = gravatar.url(email);
+
+    const newUser = await createUser(req.body, avatar);
+    const { _id, name, gender, token, waterRate, avatarURL } = newUser;
+
     res.status(201).json({
+      token,
       user: {
+        _id,
         email: newUser.email,
+        name,
+        gender,
+        waterRate,
+        avatarURL,
       },
     });
   } catch (error) {
