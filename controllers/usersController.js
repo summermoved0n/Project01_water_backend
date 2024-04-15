@@ -9,7 +9,7 @@ import { ctrlWrapper } from "../helpers/ctrlWrapper.js";
 const avatarsPath = path.resolve("public", "avatars");
 
 const currentUser = async (req, res) => {
-  console.log(req.user);
+  // console.log(req.user);
   const { email, name, token, gender, waterRate } = req.user;
 
   res.json({
@@ -24,6 +24,8 @@ const currentUser = async (req, res) => {
 };
 
 const updateAvatar = async (req, res) => {
+  const avatarURL = req.file.path;
+  console.log(avatarURL);
   const { _id } = req.user;
   const { path: oldPath, filename } = req.file;
   const newPath = path.join(avatarsPath, filename);
