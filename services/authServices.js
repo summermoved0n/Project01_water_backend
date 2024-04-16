@@ -15,8 +15,6 @@ export const createUser = async (userData, avatar) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
 
-  console.log(avatar);
-
   const user = await User.create({
     ...userData,
     avatarURL: avatar,
