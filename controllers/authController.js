@@ -1,18 +1,18 @@
-import { HttpError } from "../helpers/HttpError.js";
-import User from "../models/usersModel.js";
-import { createUser, emailUnique } from "../services/authServices.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import gravatar from "gravatar";
+import { HttpError } from '../helpers/HttpError.js';
+import User from '../models/usersModel.js';
+import { createUser, emailUnique } from '../services/authServices.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import gravatar from 'gravatar';
 
 const { SECRET_KEY } = process.env;
 
-export const register = async (req, res, next) => {
+export const signup = async (req, res, next) => {
   try {
     const { email } = req.body;
     const user = await emailUnique(email);
     if (user) {
-      throw HttpError(409, "Email in use");
+      throw HttpError(409, 'Email in use');
     }
 
     const avatar = gravatar.url(email);
@@ -41,13 +41,13 @@ export const login = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      throw HttpError(401, "Email or password is wrong");
+      throw HttpError(401, 'Email or password is wrong');
     }
 
     const isPasswordChecked = await bcrypt.compare(password, user.password);
 
     if (!isPasswordChecked) {
-      throw HttpError(401, "Email or password is wrong");
+      throw HttpError(401, 'Email or password is wrong');
     }
     //create token
     const payload = {
@@ -61,7 +61,6 @@ export const login = async (req, res, next) => {
       token: tokenIssue,
       user: {
         email: email,
-        subscription: user.subscription,
       },
     });
   } catch (error) {
@@ -80,9 +79,9 @@ export const logout = async (req, res, next) => {
 
 export const current = async (req, res, next) => {
   try {
-    const { email, subscription } = req.user;
+    const { email } = req.user;
 
-    res.json({ email, subscription });
+    res.json({ email });
   } catch (error) {
     next(error);
   }

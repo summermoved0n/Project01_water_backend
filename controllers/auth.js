@@ -1,17 +1,17 @@
-import { HttpError } from "../helpers/HttpError.js";
-import { User } from "../models/userModels.js";
-import { createUser, emailUnique } from "../services/userServices.js";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import { HttpError } from '../helpers/HttpError.js';
+import { User } from '../models/userModels.js';
+import { createUser, emailUnique } from '../services/userServices.js';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const { SECRET_KEY } = process.env;
 
-export const register = async (req, res, next) => {
+export const signup = async (req, res, next) => {
   try {
     const { email } = req.body;
     const user = await emailUnique(email);
     if (user) {
-      throw HttpError(409, "Email in use");
+      throw HttpError(409, 'Email in use');
     }
 
     const newUser = await createUser({ ...req.body });
@@ -31,13 +31,13 @@ export const login = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      throw HttpError(401, "Email or password is wrong");
+      throw HttpError(401, 'Email or password is wrong');
     }
 
     const isPasswordChecked = await bcrypt.compare(password, user.password);
 
     if (!isPasswordChecked) {
-      throw HttpError(401, "Email or password is wrong");
+      throw HttpError(401, 'Email or password is wrong');
     }
     //create token
     const payload = {
