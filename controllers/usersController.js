@@ -1,4 +1,5 @@
 import * as usersService from "../services/usersServices.js";
+import waterNotesServices from "../services/waterNotesServices.js";
 import { HttpError } from "../helpers/HttpError.js";
 import { ctrlWrapper } from "../helpers/ctrlWrapper.js";
 
@@ -29,21 +30,17 @@ const updateAvatar = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { _id, password } = req.user;
-  // console.log(req.user);
-  console.log(req.body);
   const { oldPassword, password: newPassword } = req.body;
 
   if (!oldPassword) {
     const result = await usersService.updateUserInfo(_id, req.body);
-    res.json(result);
+    return res.json(result);
   }
 
   const checkOldPassword = await usersService.isSamePassword(
     oldPassword,
     password
   );
-
-  console.log(checkOldPassword);
 
   if (!checkOldPassword) {
     throw HttpError(
@@ -53,20 +50,23 @@ const updateUser = async (req, res) => {
   }
 
   const updatePassword = await usersService.hashNewPassword(newPassword);
-  console.log(updatePassword);
 
   const result = await usersService.updateUserInfo(_id, {
     ...req.body,
-    updatePassword,
+    password: updatePassword,
   });
 
-  console.log("leave from func");
-
-  res.json(result);
+  return res.json(result);
 };
 
 const updateWaterRate = async (req, res) => {
   const { _id } = req.user;
+
+  const water = await waterNotesServices.updateWaterRate(
+    { owner: _id },
+    req.body
+  );
+
   const result = await usersService.updateWaterRate(_id, req.body);
 
   res.json(result);
