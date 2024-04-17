@@ -4,7 +4,6 @@ import { HttpError } from "../helpers/HttpError.js";
 import { ctrlWrapper } from "../helpers/ctrlWrapper.js";
 
 const currentUser = async (req, res) => {
-  // console.log(req.user);
   const { email, name, token, gender, waterRate, avatarURL } = req.user;
 
   res.json({
@@ -62,8 +61,15 @@ const updateUser = async (req, res) => {
 const updateWaterRate = async (req, res) => {
   const { _id } = req.user;
 
-  const water = await waterNotesServices.updateWaterRate(
-    { owner: _id },
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+
+  const currentDate = `${dd}-${mm}-${yyyy}`;
+
+  await waterNotesServices.updateWaterRate(
+    { owner: _id, date: currentDate },
     req.body
   );
 
