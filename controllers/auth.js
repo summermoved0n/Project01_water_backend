@@ -1,9 +1,8 @@
 import { HttpError } from '../helpers/HttpError.js';
-import User from '../models/usersModel.js';
-import { createUser, emailUnique } from '../services/authServices.js';
+import { User } from '../models/userModels.js';
+import { createUser, emailUnique } from '../services/userServices.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import gravatar from 'gravatar';
 
 const { SECRET_KEY } = process.env;
 
@@ -15,20 +14,11 @@ export const signup = async (req, res, next) => {
       throw HttpError(409, 'Email in use');
     }
 
-    const avatar = gravatar.url(email);
-
-    const newUser = await createUser(req.body, avatar);
-    const { _id, name, gender, token, waterRate, avatarURL } = newUser;
-
+    const newUser = await createUser({ ...req.body });
     res.status(201).json({
-      token,
       user: {
-        _id,
         email: newUser.email,
-        name,
-        gender,
-        waterRate,
-        avatarURL,
+        subscription: newUser.subscription,
       },
     });
   } catch (error) {
@@ -61,6 +51,7 @@ export const login = async (req, res, next) => {
       token: tokenIssue,
       user: {
         email: email,
+        subscription: user.subscription,
       },
     });
   } catch (error) {
@@ -79,9 +70,9 @@ export const logout = async (req, res, next) => {
 
 export const current = async (req, res, next) => {
   try {
-    const { email } = req.user;
+    const { email, subscription } = req.user;
 
-    res.json({ email });
+    res.json({ email, subscription });
   } catch (error) {
     next(error);
   }
