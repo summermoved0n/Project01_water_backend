@@ -27,7 +27,7 @@ const userSchema = new Schema(
       default: null,
     },
     waterRate: {
-      type: String,
+      type: Number,
       default: 2000,
     },
     avatarURL: String,
