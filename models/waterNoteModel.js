@@ -27,6 +27,10 @@ const waterNoteSchema = Schema(
       ref: "user",
       required: true,
     },
+    percentageWaterDrunk: {
+      type: Number,
+      default: 0,
+    },
   },
   { versionKey: false, timestamps: true }
 );
