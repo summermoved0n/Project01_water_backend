@@ -18,9 +18,9 @@ const storage = new CloudinaryStorage({
 
     return {
       folder: "avatars",
-      allowed_formats: ["jpg", "png"], // Adjust the allowed formats as needed
-      public_id: _id, // Use original filename as the public ID
-      transformation: { width: 28, height: 28 },
+      allowed_formats: ["jpg", "png"],
+      public_id: _id,
+      transformation: { width: 100, height: 100 },
     };
   },
 });
@@ -28,8 +28,3 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 
 export default upload;
-
-//controller
-// const someFunc = async (req, res) => {
-//   const avatarURL = req.file.path;
-// };

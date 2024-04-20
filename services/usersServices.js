@@ -11,7 +11,7 @@ export const updateWaterRate = (id, data) =>
   User.findOneAndUpdate(id, data, { select: "waterRate" });
 
 export const updateUserAvatar = (id, data) =>
-  User.findOneAndUpdate(id, data, { select: "avatarURL" });
+  User.findOneAndUpdate(id, { avatarURL: data }, { select: "avatarURL" });
 
 export const isSamePassword = async (password, hashPassword) =>
   await bcrypt.compare(password, hashPassword);
