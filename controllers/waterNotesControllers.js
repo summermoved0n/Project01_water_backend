@@ -63,11 +63,11 @@ const updateDoseWater = async (req, res) => {
     { owner },
     { dosesWater: { $elemMatch: { _id: id } } }
   );
-  const [foundData] = foundDocument;
+  const foundData = foundDocument[1];
   const [foundDoseWater] = foundData.dosesWater;
 
   if (!foundDoseWater) {
-    throw HttpError(404);
+    throw HttpError(404, "not found foundDoseWater");
   }
 
   if (foundDoseWater) {
@@ -129,7 +129,7 @@ const deleteDoseWater = async (req, res) => {
     { owner },
     { dosesWater: { $elemMatch: { _id: id } } }
   );
-  const [foundData] = foundDocument;
+  const foundData = foundDocument[1];
   const [foundDoseWater] = foundData.dosesWater;
 
   if (!foundDoseWater) {

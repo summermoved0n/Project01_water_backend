@@ -8,7 +8,6 @@ import {
 } from "../schemas/waterNoteSchema.js";
 import { authenticate } from "../middleware/authenticate.js";
 import isValidId from "../helpers/isValidId.js";
-import waterNotesServices from "../services/waterNotesServices.js";
 
 const waterNotesRouter = express.Router();
 
