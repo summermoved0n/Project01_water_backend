@@ -43,7 +43,7 @@ const updateUser = async (req, res) => {
 
   if (!checkOldPassword) {
     throw HttpError(
-      404,
+      400,
       "Sorry, the credentials you entered do not match your current password. Please verify the accuracy of the entered information and try again."
     );
   }
