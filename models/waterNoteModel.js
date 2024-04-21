@@ -4,7 +4,7 @@ const DosesWaterSchema = new Schema({
   waterVolume: {
     type: Number,
   },
-  date: String,
+  time: String,
 });
 
 const waterNoteSchema = Schema(

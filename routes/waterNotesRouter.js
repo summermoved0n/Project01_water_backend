@@ -3,8 +3,7 @@ import validateBody from "../helpers/validateBody.js";
 import waterNotesControllers from "../controllers/waterNotesControllers.js";
 import {
   waterNoteJoiSchema,
-  deleteDoseWaterJoiSchema,
-  getDataTodayJoiSchema,
+  updateDoseWaterJoiSchema,
 } from "../schemas/waterNoteSchema.js";
 import { authenticate } from "../middleware/authenticate.js";
 import isValidId from "../helpers/isValidId.js";
@@ -22,22 +21,17 @@ waterNotesRouter.post(
 waterNotesRouter.patch(
   "/update-dose-water/:id",
   isValidId,
-  validateBody(waterNoteJoiSchema),
+  validateBody(updateDoseWaterJoiSchema),
   waterNotesControllers.updateDoseWater
 );
 
 waterNotesRouter.delete(
   "/delete-dose-water/:id",
   isValidId,
-  validateBody(deleteDoseWaterJoiSchema),
   waterNotesControllers.deleteDoseWater
 );
 
-waterNotesRouter.get(
-  "/today",
-  validateBody(getDataTodayJoiSchema),
-  waterNotesControllers.today
-);
+waterNotesRouter.get("/today", waterNotesControllers.today);
 
 waterNotesRouter.get("/month", waterNotesControllers.month);
 
