@@ -63,7 +63,7 @@ const updateDoseWater = async (req, res) => {
     { owner },
     { dosesWater: { $elemMatch: { _id: id } } }
   );
-  const foundData = foundDocument[1];
+  const foundData = foundDocument[foundDocument.length - 1];
   const [foundDoseWater] = foundData.dosesWater;
 
   if (!foundDoseWater) {
@@ -123,13 +123,14 @@ const updateDoseWater = async (req, res) => {
 const deleteDoseWater = async (req, res) => {
   const { _id: owner } = req.user;
   const { id } = req.params;
-  const { date } = req.body;
+
+  const currentDate = new Date().toISOString().substring(0, 10);
 
   const foundDocument = await WaterNote.find(
     { owner },
     { dosesWater: { $elemMatch: { _id: id } } }
   );
-  const foundData = foundDocument[1];
+  const foundData = foundDocument[foundDocument.length - 1];
   const [foundDoseWater] = foundData.dosesWater;
 
   if (!foundDoseWater) {
@@ -138,7 +139,7 @@ const deleteDoseWater = async (req, res) => {
 
   if (foundDoseWater) {
     const curentDocument = await waterNotesServices.getOneAndUpdate(
-      { owner, date },
+      { owner, date: currentDate },
       {
         $pull: { dosesWater: { _id: id } },
         $inc: { totalWater: -foundDoseWater.waterVolume },
@@ -151,7 +152,7 @@ const deleteDoseWater = async (req, res) => {
     );
 
     const updateDocument = await waterNotesServices.getOneAndUpdate(
-      { owner, date },
+      { owner, date: currentDate },
       {
         percentageWaterDrunk,
       },
@@ -164,11 +165,12 @@ const deleteDoseWater = async (req, res) => {
 
 const today = async (req, res) => {
   const { _id: owner } = req.user;
-  const { date } = req.body;
+
+  const currentDate = new Date().toISOString().substring(0, 10);
 
   const currentDocument = await waterNotesServices.getOneWaterNote({
     owner,
-    date,
+    date: currentDate,
   });
 
   if (!currentDocument) {
@@ -181,7 +183,89 @@ const today = async (req, res) => {
   });
 };
 
-const month = async (req, res) => {};
+const month = async (req, res) => {
+  const { _id: owner } = req.user;
+  const { date } = req.query;
+
+  const dataMonth = await WaterNote.find({ owner, date: { $regex: date } });
+
+  const getYears = date.slice(0, 4);
+  const getMonth = date.slice(5, 7).slice(1);
+
+  const currentDate = new Date(getYears, getMonth, 0);
+  const totalDayInCurrentMonth = currentDate.getDate();
+
+  const arrDatesMonth = [];
+
+  for (let i = 1; i <= totalDayInCurrentMonth; i += 1) {
+    const date = { date: String(i) };
+    arrDatesMonth.push(date);
+  }
+
+  const dataInfo = arrDatesMonth.map((item) => {
+    const dayOfMonth = dataMonth.find((day) => {
+      const formatedDay = day.date.slice(8);
+      if (formatedDay === item.date) {
+        return day;
+      }
+    });
+
+    if (dayOfMonth) {
+      const formateDay = dayOfMonth.date.slice(8);
+
+      const currentDate = new Date(dayOfMonth.date);
+
+      const currentMonth = currentDate.toLocaleString("default", {
+        month: "long",
+      });
+
+      const date = `${formateDay}, ${currentMonth}`;
+
+      const liters = (dayOfMonth.waterRate / 1000).toFixed(1);
+      const waterRate = `${liters} L`;
+
+      const records = dayOfMonth.dosesWater.length;
+
+      const percentageWaterDrunk = dayOfMonth.percentageWaterDrunk;
+
+      const dataDay = {
+        date,
+        waterRate,
+        percentageWaterDrunk,
+        records,
+      };
+
+      return dataDay;
+    } else {
+      const dateOfMonth = new Date(getYears, getMonth - 1, item.date)
+        .toISOString()
+        .substring(0, 10);
+
+      const formateDay = dateOfMonth.slice(8);
+
+      const currentDate = new Date(dateOfMonth);
+
+      console.log(currentDate);
+
+      const currentMonth = currentDate.toLocaleString("default", {
+        month: "long",
+      });
+
+      const date = `${formateDay}, ${currentMonth}`;
+
+      const dataDay = {
+        date,
+        waterRate: 0,
+        percentageWaterDrunk: 0,
+        records: 0,
+      };
+
+      return dataDay;
+    }
+  });
+
+  res.json(dataInfo);
+};
 
 export default {
   createWaterNote: ctrlWrapper(createWaterNote),
