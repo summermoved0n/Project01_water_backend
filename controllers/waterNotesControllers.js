@@ -9,11 +9,16 @@ const createWaterNote = async (req, res) => {
 
   const waterNote = await waterNotesServices.getOneWaterNote({ owner, date });
 
+  const currentTime = new Date().toLocaleTimeString();
+  const hoursPlusMinets = currentTime.slice(0, 4);
+  const halfOfDay = currentTime.slice(8);
+  const time = hoursPlusMinets + " " + halfOfDay;
+
   if (waterNote) {
     const currentWaterNote = await waterNotesServices.getOneAndUpdate(
       { owner, date },
       {
-        $push: { dosesWater: { waterVolume, date } },
+        $push: { dosesWater: { waterVolume, time } },
         $inc: { totalWater: +waterVolume },
         waterRate,
       },
@@ -40,7 +45,7 @@ const createWaterNote = async (req, res) => {
   } else {
     const percentageWaterDrunk = Math.round(waterVolume / (waterRate / 100));
 
-    const dosesWater = [{ waterVolume, date }];
+    const dosesWater = [{ waterVolume, time }];
     const newWaterNote = await waterNotesServices.createNewWaterNote({
       date,
       dosesWater,
@@ -57,17 +62,28 @@ const createWaterNote = async (req, res) => {
 const updateDoseWater = async (req, res) => {
   const { _id: owner, waterRate } = req.user;
   const { id } = req.params;
-  const { waterVolume, date } = req.body;
+  const { waterVolume } = req.body;
+
+  const date = new Date().toISOString().substring(0, 10);
 
   const foundDocument = await WaterNote.find(
     { owner },
     { dosesWater: { $elemMatch: { _id: id } } }
   );
-  const foundData = foundDocument[foundDocument.length - 1];
-  const [foundDoseWater] = foundData.dosesWater;
+
+  const foundDoseWaterUpdate = foundDocument.filter((item) => {
+    const dose = item.dosesWater[0];
+    if (dose) {
+      return dose;
+    }
+  });
+
+  const [allObjfoundDoseWater] = foundDoseWaterUpdate;
+
+  const [foundDoseWater] = allObjfoundDoseWater.dosesWater;
 
   if (!foundDoseWater) {
-    throw HttpError(404, "not found foundDoseWater");
+    throw HttpError(404, "not found");
   }
 
   if (foundDoseWater) {
@@ -130,8 +146,17 @@ const deleteDoseWater = async (req, res) => {
     { owner },
     { dosesWater: { $elemMatch: { _id: id } } }
   );
-  const foundData = foundDocument[foundDocument.length - 1];
-  const [foundDoseWater] = foundData.dosesWater;
+
+  const foundDoseWaterDelete = foundDocument.filter((item) => {
+    const dose = item.dosesWater[0];
+    if (dose) {
+      return dose;
+    }
+  });
+
+  const [allObjfoundDoseWater] = foundDoseWaterDelete;
+
+  const [foundDoseWater] = allObjfoundDoseWater.dosesWater;
 
   if (!foundDoseWater) {
     throw HttpError(404);
@@ -205,7 +230,13 @@ const month = async (req, res) => {
   const dataInfo = arrDatesMonth.map((item) => {
     const dayOfMonth = dataMonth.find((day) => {
       const formatedDay = day.date.slice(8);
-      if (formatedDay === item.date) {
+
+      let date = item.date;
+      if (item.date.length === 1) {
+        date = "0" + date;
+      }
+
+      if (formatedDay === date) {
         return day;
       }
     });
@@ -213,11 +244,9 @@ const month = async (req, res) => {
     if (dayOfMonth) {
       const formateDay = dayOfMonth.date.slice(8);
 
-      const currentDate = new Date(dayOfMonth.date);
+      const formatter = new Intl.DateTimeFormat("default", { month: "long" });
 
-      const currentMonth = currentDate.toLocaleString("default", {
-        month: "long",
-      });
+      const currentMonth = formatter.format(new Date(getYears, getMonth - 1));
 
       const date = `${formateDay}, ${currentMonth}`;
 
@@ -244,8 +273,6 @@ const month = async (req, res) => {
       const formateDay = dateOfMonth.slice(8);
 
       const currentDate = new Date(dateOfMonth);
-
-      console.log(currentDate);
 
       const currentMonth = currentDate.toLocaleString("default", {
         month: "long",
