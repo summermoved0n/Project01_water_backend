@@ -272,11 +272,9 @@ const month = async (req, res) => {
 
       const formateDay = dateOfMonth.slice(8);
 
-      const currentDate = new Date(dateOfMonth);
+      const formatter = new Intl.DateTimeFormat("default", { month: "long" });
 
-      const currentMonth = currentDate.toLocaleString("default", {
-        month: "long",
-      });
+      const currentMonth = formatter.format(new Date(getYears, getMonth - 1));
 
       const date = `${formateDay}, ${currentMonth}`;
 

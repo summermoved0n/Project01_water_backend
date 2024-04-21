@@ -1,7 +1,10 @@
 import express from "express";
 import validateBody from "../helpers/validateBody.js";
 import waterNotesControllers from "../controllers/waterNotesControllers.js";
-import { waterNoteJoiSchema } from "../schemas/waterNoteSchema.js";
+import {
+  waterNoteJoiSchema,
+  updateDoseWaterJoiSchema,
+} from "../schemas/waterNoteSchema.js";
 import { authenticate } from "../middleware/authenticate.js";
 import isValidId from "../helpers/isValidId.js";
 
@@ -18,7 +21,7 @@ waterNotesRouter.post(
 waterNotesRouter.patch(
   "/update-dose-water/:id",
   isValidId,
-  validateBody(waterNoteJoiSchema),
+  validateBody(updateDoseWaterJoiSchema),
   waterNotesControllers.updateDoseWater
 );
 
