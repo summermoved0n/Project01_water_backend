@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 export const userUpdateAvatar = Joi.object({
-  avatarUrl: Joi.binary(),
+  avatarURL: Joi.binary(),
 });
 
 export const userUpadateWaterRate = Joi.object({
