@@ -280,7 +280,7 @@ const month = async (req, res) => {
 
       const dataDay = {
         date,
-        waterRate: 0,
+        waterRate: "2.0 L",
         percentageWaterDrunk: 0,
         records: 0,
       };
