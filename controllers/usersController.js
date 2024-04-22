@@ -55,7 +55,11 @@ const updateUser = async (req, res) => {
     password: updatePassword,
   });
 
-  return res.json(result);
+  const { email, name, gender, avatarURL, waterRate } = result;
+
+  return res.json({
+    user: { email, name, gender, avatarURL, waterRate },
+  });
 };
 
 const updateWaterRate = async (req, res) => {

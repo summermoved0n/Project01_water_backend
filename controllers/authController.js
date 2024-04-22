@@ -44,6 +44,8 @@ export const login = async (req, res, next) => {
       throw HttpError(401, "Email or password is wrong");
     }
 
+    console.log(user);
+
     const isPasswordChecked = await bcrypt.compare(password, user.password);
 
     if (!isPasswordChecked) {
@@ -54,13 +56,16 @@ export const login = async (req, res, next) => {
       id: user._id,
     };
     const tokenIssue = jwt.sign(payload, SECRET_KEY);
-    console.log(tokenIssue);
     await User.findByIdAndUpdate(user._id, { token: tokenIssue });
 
     res.json({
       token: tokenIssue,
       user: {
-        email: email,
+        email: user.email,
+        name: user.name,
+        gender: user.gender,
+        waterRate: user.waterRate,
+        avatarURL: user.avatarURL,
       },
     });
   } catch (error) {
