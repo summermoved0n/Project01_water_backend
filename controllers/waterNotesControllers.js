@@ -199,13 +199,16 @@ const today = async (req, res) => {
   });
 
   if (!currentDocument) {
-    throw HttpError(404);
+    res.json({
+      percentageWaterDrunk: 0,
+      dosesWater: [],
+    });
+  } else {
+    res.json({
+      percentageWaterDrunk: currentDocument.percentageWaterDrunk,
+      dosesWater: currentDocument.dosesWater,
+    });
   }
-
-  res.json({
-    percentageWaterDrunk: currentDocument.percentageWaterDrunk,
-    dosesWater: currentDocument.dosesWater,
-  });
 };
 
 const month = async (req, res) => {
