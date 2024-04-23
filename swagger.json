@@ -568,11 +568,7 @@
             "type": "string"
           },
           "gender": {
-            "type": "string",
-            "enum": ["Man", "Woman"]
-          },
-          "waterRate": {
-            "type": "number"
+            "type": "male or female"
           },
           "oldPassword": {
             "type": "string"
