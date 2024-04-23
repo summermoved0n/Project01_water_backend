@@ -41,7 +41,7 @@ const createWaterNote = async (req, res) => {
       { returnDocument: "after" }
     );
 
-    res.json(updateWaterNote);
+    res.status(201).json(updateWaterNote);
   } else {
     const percentageWaterDrunk = Math.round(waterVolume / (waterRate / 100));
 
@@ -83,7 +83,7 @@ const updateDoseWater = async (req, res) => {
   const [foundDoseWater] = allObjfoundDoseWater.dosesWater;
 
   if (!foundDoseWater) {
-    throw HttpError(404, "not found");
+    throw HttpError(404, "Not found");
   }
 
   if (foundDoseWater) {
@@ -159,7 +159,7 @@ const deleteDoseWater = async (req, res) => {
   const [foundDoseWater] = allObjfoundDoseWater.dosesWater;
 
   if (!foundDoseWater) {
-    throw HttpError(404);
+    throw HttpError(404, "Not found dose water");
   }
 
   if (foundDoseWater) {
