@@ -569,10 +569,7 @@
           },
           "gender": {
             "type": "string",
-            "enum": ["Man", "Woman"]
-          },
-          "waterRate": {
-            "type": "number"
+            "enum": ["male", "female"]
           },
           "oldPassword": {
             "type": "string"
@@ -621,7 +618,7 @@
         "required": ["waterRate"],
         "properties": {
           "waterRate": {
-            "type": "string",
+            "type": "number",
             "description": "New water rate",
             "example": "3000"
           }
@@ -655,7 +652,7 @@
         "properties": {
           "avatarURL": {
             "type": "string",
-            "example": "//www.gravatar.com/avatar/c0bb85eb63201a3270b96270223eaa11",
+            "example": "https://res.cloudinary.com/dc3ape1zd/image/upload/v1713973131/avatars/662698cb7713414015a22418.jpg",
             "description": "New avatar"
           }
         }
@@ -706,7 +703,7 @@
         "required": ["waterVolume", "date"],
         "properties": {
           "waterVolume": {
-            "type": "string",
+            "type": "number",
             "description": "One dose water",
             "example": "100"
           },
@@ -806,7 +803,7 @@
         "required": ["waterVolume"],
         "properties": {
           "waterVolume": {
-            "type": "string",
+            "type": "number",
             "description": "One dose water",
             "example": "200"
           },
