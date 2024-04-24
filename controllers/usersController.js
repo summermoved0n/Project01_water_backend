@@ -24,7 +24,7 @@ const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const result = await usersService.updateUserAvatar(_id, avatarURL);
 
-  res.json(result);
+  res.json({ avatarURL: result.avatarURL });
 };
 
 const updateUser = async (req, res) => {
@@ -33,7 +33,8 @@ const updateUser = async (req, res) => {
 
   if (!oldPassword) {
     const result = await usersService.updateUserInfo(_id, req.body);
-    return res.json(result);
+    const { email, name, gender, avatarURL, waterRate } = result;
+    return res.json({ email, name, gender, avatarURL, waterRate });
   }
 
   const checkOldPassword = await usersService.isSamePassword(
@@ -58,7 +59,11 @@ const updateUser = async (req, res) => {
   const { email, name, gender, avatarURL, waterRate } = result;
 
   return res.json({
-    user: { email, name, gender, avatarURL, waterRate },
+    email,
+    name,
+    gender,
+    avatarURL,
+    waterRate,
   });
 };
 
@@ -79,7 +84,7 @@ const updateWaterRate = async (req, res) => {
 
   const result = await usersService.updateWaterRate(_id, req.body);
 
-  res.json(result);
+  res.json({ waterRate: result.waterRate });
 };
 
 export default {
