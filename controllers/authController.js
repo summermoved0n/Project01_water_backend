@@ -44,8 +44,6 @@ export const login = async (req, res, next) => {
       throw HttpError(401, "Email or password is wrong");
     }
 
-    console.log(user);
-
     const isPasswordChecked = await bcrypt.compare(password, user.password);
 
     if (!isPasswordChecked) {
