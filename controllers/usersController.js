@@ -20,7 +20,6 @@ const currentUser = async (req, res) => {
 
 const updateAvatar = async (req, res) => {
   const avatarURL = req.file.path;
-
   const { _id } = req.user;
   const result = await usersService.updateUserAvatar(_id, avatarURL);
 
