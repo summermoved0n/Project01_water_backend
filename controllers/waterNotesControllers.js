@@ -5,14 +5,14 @@ import { WaterNote } from "../models/waterNoteModel.js";
 
 const createWaterNote = async (req, res) => {
   const { _id: owner, waterRate } = req.user;
-  const { waterVolume, date } = req.body;
+  const { waterVolume, date, time } = req.body;
 
   const waterNote = await waterNotesServices.getOneWaterNote({ owner, date });
 
-  const currentTime = new Date().toLocaleTimeString();
-  const hoursPlusMinets = currentTime.slice(0, 4);
-  const halfOfDay = currentTime.slice(8);
-  const time = hoursPlusMinets + " " + halfOfDay;
+  // const currentTime = new Date().toLocaleTimeString();
+  // const hoursPlusMinets = currentTime.slice(0, 4);
+  // const halfOfDay = currentTime.slice(8);
+  // const time = hoursPlusMinets + " " + halfOfDay;
 
   if (waterNote) {
     const currentWaterNote = await waterNotesServices.getOneAndUpdate(
@@ -62,7 +62,7 @@ const createWaterNote = async (req, res) => {
 const updateDoseWater = async (req, res) => {
   const { _id: owner, waterRate } = req.user;
   const { id } = req.params;
-  const { waterVolume } = req.body;
+  const { waterVolume, time } = req.body;
 
   const date = new Date().toISOString().substring(0, 10);
 
@@ -94,7 +94,7 @@ const updateDoseWater = async (req, res) => {
 
     const newDosesWater = [...currentWaterNote.dosesWater].map((dose) => {
       if (dose.id === id) {
-        const newDose = { ...dose._doc, waterVolume };
+        const newDose = { ...dose._doc, waterVolume, time };
         return newDose;
       }
       return dose;
