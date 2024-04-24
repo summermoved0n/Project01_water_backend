@@ -153,7 +153,7 @@
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Update user info",
-          "required": true,
+
           "content": {
             "application/json": {
               "schema": {
@@ -568,7 +568,11 @@
             "type": "string"
           },
           "gender": {
-            "type": "male or female"
+            "type": "string",
+            "enum": ["Man", "Woman"]
+          },
+          "waterRate": {
+            "type": "number"
           },
           "oldPassword": {
             "type": "string"
@@ -585,35 +589,29 @@
       },
       "UserUpdateResponse": {
         "type": "object",
-        "required": ["user"],
+        "required": ["email", "name", "gender", "waterRate", "avatarURL"],
         "properties": {
-          "user": {
-            "type": "object",
-            "description": "Cuurrent info user",
-            "properties": {
-              "email": {
-                "type": "string",
-                "example": "user@gmail.com",
-                "format": "email"
-              },
-              "name": {
-                "type": "string",
-                "example": "User"
-              },
-              "gender": {
-                "type": null,
-                "example": null
-              },
-              "waterRate": {
-                "type": "number",
-                "example": "2000"
-              },
-              "avatarURL": {
-                "type": "string",
-                "description": "User avatar",
-                "example": "//www.gravatar.com/avatar/c0bb85eb63201a3270b96270223eaa11"
-              }
-            }
+          "email": {
+            "type": "string",
+            "example": "user@gmail.com",
+            "format": "email"
+          },
+          "name": {
+            "type": "string",
+            "example": "User"
+          },
+          "gender": {
+            "type": null,
+            "example": null
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "User avatar",
+            "example": "//www.gravatar.com/avatar/c0bb85eb63201a3270b96270223eaa11"
+          },
+          "waterRate": {
+            "type": "number",
+            "example": "2000"
           }
         }
       },
@@ -631,13 +629,8 @@
       },
       "UserUpdateWaterRateResponse": {
         "type": "object",
-        "required": ["_id", "waterRate"],
+        "required": ["waterRate"],
         "properties": {
-          "_id": {
-            "type": "string",
-            "description": "User id",
-            "example": "662664f3bc2687ad92e296aq"
-          },
           "waterRate": {
             "type": "number",
             "description": "New water rate",
@@ -647,8 +640,9 @@
       },
       "UserAvatarRequest": {
         "type": "object",
+        "required": ["avatarURL"],
         "properties": {
-          "file": {
+          "avatarURL": {
             "type": "string",
             "format": "binary",
             "description": "User avatar"
@@ -657,15 +651,11 @@
       },
       "UserAvatarResponse": {
         "type": "object",
-        "required": ["_id", "avatarURL"],
+        "required": ["avatarURL"],
         "properties": {
-          "_id": {
-            "type": "string",
-            "description": "User id",
-            "example": "662664f3bc2687ad92e296aq"
-          },
           "avatarURL": {
             "type": "string",
+            "example": "//www.gravatar.com/avatar/c0bb85eb63201a3270b96270223eaa11",
             "description": "New avatar"
           }
         }
@@ -724,6 +714,11 @@
             "type": "string",
             "description": "Сurrent date",
             "example": "2024-04-21"
+          },
+          "time": {
+            "type": "string",
+            "description": "Time when the water was drunk",
+            "example": "07:00 AM"
           }
         }
       },
@@ -759,7 +754,7 @@
                 },
                 "time": {
                   "type": "string",
-                  "example": "8:50 PM"
+                  "example": "07:00 AM"
                 },
                 "_id": {
                   "type": "string",
@@ -814,6 +809,10 @@
             "type": "string",
             "description": "One dose water",
             "example": "200"
+          },
+          "time": {
+            "type": "string",
+            "example": "07:00 AM"
           }
         }
       },
