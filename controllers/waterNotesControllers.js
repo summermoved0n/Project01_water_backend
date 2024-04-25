@@ -171,9 +171,13 @@ const deleteDoseWater = async (req, res) => {
       { returnDocument: "after" }
     );
 
-    const percentageWaterDrunk = Math.round(
+    let percentageWaterDrunk = Math.round(
       curentDocument.totalWater / (curentDocument.waterRate / 100)
     );
+
+    if (percentageWaterDrunk > 100) {
+      percentageWaterDrunk = 100;
+    }
 
     const updateDocument = await waterNotesServices.getOneAndUpdate(
       { owner, date: currentDate },
@@ -192,14 +196,10 @@ const today = async (req, res) => {
 
   const currentDate = new Date().toISOString().substring(0, 10);
 
-  console.log(currentDate);
-
   const currentDocument = await waterNotesServices.getOneWaterNote({
     owner,
     date: currentDate,
   });
-
-  console.log(currentDocument);
 
   if (!currentDocument) {
     res.json({
@@ -207,9 +207,13 @@ const today = async (req, res) => {
       dosesWater: [],
     });
   } else if (currentDocument && waterRate !== currentDocument.waterRate) {
-    const percentageWaterDrunk = Math.round(
+    let percentageWaterDrunk = Math.round(
       currentDocument.totalWater / (waterRate / 100)
     );
+
+    if (percentageWaterDrunk > 100) {
+      percentageWaterDrunk = 100;
+    }
 
     await waterNotesServices.getOneAndUpdate(
       { owner, date: currentDate },
