@@ -38,7 +38,11 @@ const createWaterNote = async (req, res) => {
 
     res.status(201).json(updateWaterNote);
   } else {
-    const percentageWaterDrunk = Math.round(waterVolume / (waterRate / 100));
+    let percentageWaterDrunk = Math.round(waterVolume / (waterRate / 100));
+
+    if (percentageWaterDrunk > 100) {
+      percentageWaterDrunk = 100;
+    }
 
     const dosesWater = [{ waterVolume, time }];
     const newWaterNote = await waterNotesServices.createNewWaterNote({
