@@ -236,7 +236,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful operation",
             "content": {
               "application/json": {
@@ -595,8 +595,8 @@
             "example": "User"
           },
           "gender": {
-            "type": null,
-            "example": null
+            "type": "srring",
+            "example": "male"
           },
           "avatarURL": {
             "type": "string",
@@ -639,7 +639,7 @@
           "avatarURL": {
             "type": "string",
             "format": "binary",
-            "description": "User avatar"
+            "description": "New avatar"
           }
         }
       },
@@ -999,10 +999,10 @@
       },
       "MonthResponse": {
         "type": "array",
-        "required": ["date", "waterRate", "records", "percentageWaterDrunk"],
+
         "items": {
           "type": "object",
-
+          "required": ["date", "waterRate", "records", "percentageWaterDrunk"],
           "properties": {
             "date": {
               "type": "string",
