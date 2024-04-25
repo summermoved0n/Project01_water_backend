@@ -11,7 +11,10 @@
   },
   "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
-  "servers": [{ "url": "https://project01-water-backend.onrender.com/api/" }],
+  "servers": [
+    { "url": "https://project01-water-backend.onrender.com/api/" },
+    { "url": "http://localhost:3030/api" }
+  ],
   "tags": [
     {
       "name": "Auth",
