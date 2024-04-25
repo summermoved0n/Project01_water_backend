@@ -9,11 +9,6 @@ const createWaterNote = async (req, res) => {
 
   const waterNote = await waterNotesServices.getOneWaterNote({ owner, date });
 
-  // const currentTime = new Date().toLocaleTimeString();
-  // const hoursPlusMinets = currentTime.slice(0, 4);
-  // const halfOfDay = currentTime.slice(8);
-  // const time = hoursPlusMinets + " " + halfOfDay;
-
   if (waterNote) {
     const currentWaterNote = await waterNotesServices.getOneAndUpdate(
       { owner, date },
@@ -189,19 +184,40 @@ const deleteDoseWater = async (req, res) => {
 };
 
 const today = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { _id: owner, waterRate } = req.user;
 
   const currentDate = new Date().toISOString().substring(0, 10);
+
+  console.log(currentDate);
 
   const currentDocument = await waterNotesServices.getOneWaterNote({
     owner,
     date: currentDate,
   });
 
+  console.log(currentDocument);
+
   if (!currentDocument) {
     res.json({
       percentageWaterDrunk: 0,
       dosesWater: [],
+    });
+  } else if (currentDocument && waterRate !== currentDocument.waterRate) {
+    const percentageWaterDrunk = Math.round(
+      currentDocument.totalWater / (waterRate / 100)
+    );
+
+    await waterNotesServices.getOneAndUpdate(
+      { owner, date: currentDate },
+      {
+        waterRate,
+        percentageWaterDrunk,
+      }
+    );
+
+    res.json({
+      percentageWaterDrunk,
+      dosesWater: currentDocument.dosesWater,
     });
   } else {
     res.json({

@@ -76,11 +76,6 @@ const updateWaterRate = async (req, res) => {
 
   const currentDate = `${dd}-${mm}-${yyyy}`;
 
-  await waterNotesServices.updateWaterRate(
-    { owner: _id, date: currentDate },
-    req.body
-  );
-
   const result = await usersService.updateWaterRate(_id, req.body);
 
   res.json({ waterRate: result.waterRate });
