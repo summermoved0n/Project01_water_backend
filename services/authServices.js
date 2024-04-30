@@ -11,13 +11,14 @@ export const emailUnique = async (email) => {
   return user;
 };
 
-export const createUser = async (userData, avatar) => {
+export const createUser = async (userData, avatar, verificationToken) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
 
   const user = await User.create({
     ...userData,
     avatarURL: avatar,
+    verificationToken,
     password: hashedPassword,
   });
 
